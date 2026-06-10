@@ -119,3 +119,4 @@ environment:
 - Naming: `SECTION__SUBSECTION__KEY` — double underscore, tutto maiuscolo.
 - Variabili critiche sempre con `${VAR:-default}`.
 - Le variabili d'ambiente nel container **sovrascrivono** i valori di `appsettings.json` — usarle per differenziare ambienti (dev, staging, prod).
+- **`appsettings.local.json` non appartiene ai container**: per ambienti containerizzati tutte le variabili vanno nel blocco `environment` del compose (o via Portainer secrets per le credenziali). Il file `.local` è esclusivo per sviluppo locale senza container.
