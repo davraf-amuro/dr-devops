@@ -13,7 +13,7 @@ Stack: .NET 10 Minimal API, deploy su Docker Swarm tramite Portainer.
 
 - Il tag immagine **deve sempre avere un default** per evitare `invalid reference format` in Portainer:
   ```yaml
-  image: registry.unidata.it/voisoft/foundrybridge-${ENVIRONMENT:-main}:latest
+  image: registry.example.com/myorg/myapp-${ENVIRONMENT:-main}:latest
   ```
 - Il path del registry deve corrispondere esattamente a quello prodotto dalla pipeline CI (`.gitlab-ci.yml`).
 - Il nome immagine deve essere **tutto minuscolo** — Docker non accetta maiuscole nel reference.
@@ -35,7 +35,7 @@ JSON path:   Section.SubSection.Key
 Env var:     SECTION__SUBSECTION__KEY
 ```
 
-### Esempio da `appsettings.json` di questo progetto
+### Esempio da `appsettings.json` (nomi fittizi — sostituisci con le sezioni reali del progetto)
 
 ```json
 {
@@ -52,7 +52,7 @@ Env var:     SECTION__SUBSECTION__KEY
       {
         "Name": "File",
         "Args": {
-          "path": "logs/FoundryBridge-.log",
+          "path": "logs/MyApp-.log",
           "formatter": "Serilog.Formatting.Compact.CompactJsonFormatter, Serilog.Formatting.Compact",
           "rollingInterval": "Day",
           "retainedFileCountLimit": 90
@@ -61,9 +61,9 @@ Env var:     SECTION__SUBSECTION__KEY
     ],
     "Enrich": [ "FromLogContext" ]
   },
-  "FoundryAgent": {
-    "ProjectEndpoint": "https://...",
-    "AgentName": "fake-agent-name"
+  "MyService": {
+    "Endpoint": "https://...",
+    "ClientName": "fake-client-name"
   }
 }
 ```
@@ -80,15 +80,15 @@ environment:
   # Array WriteTo: indice 0 = Console, indice 1 = File
   - SERILOG__WRITETO__0__NAME=${SERILOG__WRITETO__0__NAME:-Console}
   - SERILOG__WRITETO__1__NAME=${SERILOG__WRITETO__1__NAME:-File}
-  - SERILOG__WRITETO__1__ARGS__PATH=${SERILOG__WRITETO__1__ARGS__PATH:-logs/FoundryBridge-.log}
+  - SERILOG__WRITETO__1__ARGS__PATH=${SERILOG__WRITETO__1__ARGS__PATH:-logs/MyApp-.log}
   - SERILOG__WRITETO__1__ARGS__FORMATTER=${SERILOG__WRITETO__1__ARGS__FORMATTER}
   - SERILOG__WRITETO__1__ARGS__ROLLINGINTERVAL=${SERILOG__WRITETO__1__ARGS__ROLLINGINTERVAL:-Day}
   - SERILOG__WRITETO__1__ARGS__RETAINEDFILECOUNTLIMIT=${SERILOG__WRITETO__1__ARGS__RETAINEDFILECOUNTLIMIT:-90}
   # Array Enrich: indice 0
   - SERILOG__ENRICH__0=${SERILOG__ENRICH__0:-FromLogContext}
-  # FoundryAgent.ProjectEndpoint → FOUNDRYAGENT__PROJECTENDPOINT
-  - FOUNDRYAGENT__PROJECTENDPOINT=${FOUNDRYAGENT__PROJECTENDPOINT}
-  - FOUNDRYAGENT__AGENTNAME=${FOUNDRYAGENT__AGENTNAME}
+  # MyService.Endpoint → MYSERVICE__ENDPOINT
+  - MYSERVICE__ENDPOINT=${MYSERVICE__ENDPOINT}
+  - MYSERVICE__CLIENTNAME=${MYSERVICE__CLIENTNAME}
 ```
 
 ### Regole per gli array JSON
@@ -107,9 +107,9 @@ environment:
 - Le chiavi **sensibili** (credenziali, endpoint segreti) non devono avere default e vanno commentate:
   ```yaml
   # Secrets — inserire via Portainer UI, NON qui
-  # - FOUNDRYAGENT__TENANTID=${FOUNDRYAGENT__TENANTID}
-  # - FOUNDRYAGENT__CLIENTID=${FOUNDRYAGENT__CLIENTID}
-  # - FOUNDRYAGENT__CLIENTSECRET=${FOUNDRYAGENT__CLIENTSECRET}
+  # - MYSERVICE__TENANTID=${MYSERVICE__TENANTID}
+  # - MYSERVICE__CLIENTID=${MYSERVICE__CLIENTID}
+  # - MYSERVICE__CLIENTSECRET=${MYSERVICE__CLIENTSECRET}
   ```
 
 ---
@@ -120,3 +120,5 @@ environment:
 - Variabili critiche sempre con `${VAR:-default}`.
 - Le variabili d'ambiente nel container **sovrascrivono** i valori di `appsettings.json` — usarle per differenziare ambienti (dev, staging, prod).
 - **`appsettings.local.json` non appartiene ai container**: per ambienti containerizzati tutte le variabili vanno nel blocco `environment` del compose (o via Portainer secrets per le credenziali). Il file `.local` è esclusivo per sviluppo locale senza container.
+
+*Istruzione v1.1 - Docker Swarm Compose - 2026-07-02 00:03 — claude-fable-5 — esempi genericizzati (nessun dato interno)*
