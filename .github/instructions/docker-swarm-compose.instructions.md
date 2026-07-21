@@ -11,13 +11,15 @@ Stack: .NET 10 Minimal API, deploy su Docker Swarm tramite Portainer.
 
 ## 1. Image Reference
 
-- Il tag immagine **deve sempre avere un default** per evitare `invalid reference format` in Portainer:
+- Formato: `<registry>/<org>/<image-name>-<branch-slug>:<tag>`
+- Il **tag** va parametrizzato con `${IMAGE_TAG:-latest}` — **mai `:latest` hardcoded**:
   ```yaml
-  image: registry.example.com/myorg/myapp-${ENVIRONMENT:-main}:latest
+  image: registry.example.com/myorg/myapp-${ENVIRONMENT:-main}:${IMAGE_TAG:-latest}
   ```
+  Motivo: Swarm confronta il **tag**, non il digest. Con `:latest` fisso il redeploy spesso non rileva la nuova immagine e non ridistribuisce, non è tracciabile quale versione gira e il rollback non è pulito. In produzione si imposta `IMAGE_TAG=vX.Y.Z` (= git tag della release) in Portainer; il default `latest` serve solo per dev.
+- Ogni segmento parametrizzato **deve avere un default** (`${VAR:-default}`) per evitare `invalid reference format` in Portainer.
 - Il path del registry deve corrispondere esattamente a quello prodotto dalla pipeline CI (`.gitlab-ci.yml`).
 - Il nome immagine deve essere **tutto minuscolo** — Docker non accetta maiuscole nel reference.
-- Formato: `<registry>/<org>/<image-name>-<branch-slug>:<tag>`
 
 ---
 
