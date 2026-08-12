@@ -141,7 +141,34 @@ Regole e lezioni apprese:
 
 ---
 
-## 6. Adattare per un nuovo progetto
+## 6. Chiavi Data Protection (servizi con autenticazione)
+
+Vale per ogni servizio .NET con autenticazione a cookie o bearer. Le sessioni sono cifrate con le chiavi Data Protection: se restano dentro il container, **ricrearlo invalida tutte le sessioni** e con `replicas > 1` ogni replica ha il proprio portachiavi, quindi il login su una replica non vale sull'altra (401 a intermittenza).
+
+Due modi per persistere il portachiavi, da scegliere nello stack:
+
+| Modo | Cosa serve nel compose | Quando |
+|------|------------------------|--------|
+| Database | Nessun volume: le chiavi stanno in una tabella del DB già usato dal servizio | Default, se il servizio ha già un database |
+| Volume | Un volume dedicato montato sul path delle chiavi | Se il DB non è disponibile all'avvio |
+
+```yaml
+services:
+  api:
+    volumes:
+      - dataprotection-keys:/keys      # solo nel modo "volume"
+
+volumes:
+  dataprotection-keys:
+```
+
+Il lato codice — `PersistKeysToDbContext` / `PersistKeysToFileSystem`, `SetApplicationName` e `UseForwardedHeaders` — è definito in `minimal-api-architecture.instructions.md`, sezione "Autenticazione": **fonte unica**, non duplicare qui la configurazione.
+
+> ⚠️ `replicas > 1` senza portachiavi condiviso rompe l'autenticazione in modo intermittente, non con un errore. Verificare **prima** di alzare le repliche.
+
+---
+
+## 7. Adattare per un nuovo progetto
 
 1. Cambiare la chiave del servizio sotto `services:` e il path immagine.
 2. Una riga `environment:` per ogni config key (rispettando §2 e §3).
@@ -159,5 +186,6 @@ Regole e lezioni apprese:
 - [ ] `replicas: 1` e `order: stop-first` per worker stateful
 - [ ] `placement` presente solo se i nodi target raggiungono il registry
 - [ ] `logging` GELF (se presente): `gelf-address=${GELF_ADDRESS}`, non-blocking, buffer 4m
+- [ ] Servizio con autenticazione: portachiavi Data Protection persistito fuori dal container (DB o volume) — obbligatorio prima di alzare `replicas`
 
-*Istruzione v2.0 — Docker Swarm Compose — 2026-07-21 — claude-opus-4-8 — esempi genericizzati (nessun dato interno)*
+*Istruzione v2.1 — Docker Swarm Compose — 2026-08-12 — claude-opus-5 — esempi genericizzati (nessun dato interno)*
