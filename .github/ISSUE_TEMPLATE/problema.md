@@ -2,7 +2,7 @@
 name: Segnalazione di un problema
 about: Una regola di questo pacchetto è sbagliata, ambigua o porta l'agente fuori strada
 title: ''
-labels: problema
+labels: bug
 assignees: ''
 ---
 

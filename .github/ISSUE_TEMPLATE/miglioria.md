@@ -2,7 +2,7 @@
 name: Richiesta di miglioria
 about: Proponi una regola nuova, una precisazione o un'estensione di questo pacchetto
 title: ''
-labels: miglioria
+labels: enhancement
 assignees: ''
 ---
 
