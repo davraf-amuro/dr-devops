@@ -162,7 +162,14 @@ volumes:
   dataprotection-keys:
 ```
 
-Il lato codice — `PersistKeysToDbContext` / `PersistKeysToFileSystem`, `SetApplicationName` e `UseForwardedHeaders` — è definito in `minimal-api-architecture.instructions.md`, sezione "Autenticazione": **fonte unica**, non duplicare qui la configurazione.
+**Il lato codice non si configura da qui.** Controlla `.ai/dr-guidelines-packages.json`: se elenca `dr-minimalapi`, la fonte unica è `minimal-api-architecture.instructions.md`, sezione "Autenticazione" — seguila, non duplicarla, e dichiara nell'output che l'hai usata.
+
+Se non lo elenca, questo file non contiene la configurazione: dichiaralo nell'output e fermati a due requisiti, che valgono qualunque sia lo stack dietro il servizio.
+
+- **Le repliche devono condividere il portachiavi.** Ogni replica che ne genera uno proprio invalida quello che hanno emesso le altre.
+- **La fiducia va limitata al proxy noto.** Un servizio dietro proxy deve accettare gli header inoltrati solo da quel proxy, mai da chiunque.
+
+Come si ottengano, nel linguaggio del servizio, è fuori dal perimetro di questo pacchetto: chiedi, o installa quello che porta la regola. Se il core `dr-guidelines` è installato, la convenzione che regola questi rimandi è in `cross-package-references.instructions.md`.
 
 > ⚠️ `replicas > 1` senza portachiavi condiviso rompe l'autenticazione in modo intermittente, non con un errore. Verificare **prima** di alzare le repliche.
 
@@ -188,4 +195,4 @@ Il lato codice — `PersistKeysToDbContext` / `PersistKeysToFileSystem`, `SetApp
 - [ ] `logging` GELF (se presente): `gelf-address=${GELF_ADDRESS}`, non-blocking, buffer 4m
 - [ ] Servizio con autenticazione: portachiavi Data Protection persistito fuori dal container (DB o volume) — obbligatorio prima di alzare `replicas`
 
-*Istruzione v2.1 — Docker Swarm Compose — 2026-08-12 — claude-opus-5 — esempi genericizzati (nessun dato interno)*
+*Istruzione v2.2 — Docker Swarm Compose — 2026-09-24 — claude-opus-5 — rimando a dr-minimalapi reso condizionale al manifest, ripiego limitato ai requisiti (dr-guidelines#5)*

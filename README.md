@@ -18,7 +18,7 @@ Pacchetto di linee guida per rilascio e CI/CD: compose Docker Swarm, stack Porta
 - Contenuto delle regole: descrivono servizi .NET 10 (worker o Minimal API) deployati su Docker Swarm tramite Portainer, con immagini prodotte da GitLab CI/CD.
 - Dominio del catalogo: `devops` (Deploy, container e CI/CD, kind `any`). È l'unico pacchetto del dominio.
 - Tipologie di progetto che lo suggeriscono: nessuna. Il dominio ha `projectTypes` vuoto e nessuna tipologia lo cita in `suggestedPackages` o `optionalPackages`.
-- Rimandi ad altri pacchetti: `docker-swarm-compose.instructions.md` cita `sensitive-data.instructions.md` del core. Per il codice Data Protection rimanda a `minimal-api-architecture.instructions.md` (sezione "Autenticazione") di `dr-minimalapi`, che non è una dipendenza dichiarata.
+- Rimandi ad altri pacchetti: `docker-swarm-compose.instructions.md` cita `sensitive-data.instructions.md` del core. Per il codice Data Protection rimanda a `minimal-api-architecture.instructions.md` (sezione "Autenticazione") di `dr-minimalapi`, che **non** è una dipendenza dichiarata, ed è voluto: questo pacchetto è `appliesTo: any` e copre anche repository di sola infrastruttura, senza .NET. Il rimando è condizionale al manifest e, quando il pacchetto manca, si ferma a dichiarare i due requisiti — portachiavi condiviso fra le repliche, fiducia limitata al proxy noto — senza entrare nel codice. Vedi `cross-package-references.instructions.md` del core.
 
 ## 🚀 Come si installa
 
@@ -85,4 +85,4 @@ Dal progetto host usa `/dr-segnala-miglioria <descrizione>` (su Copilot il promp
 
 ---
 
-*Documento aggiornato: Settembre 2026 — Revisione v1.0 — 2026-09-16 — claude-opus-5*
+*Documento aggiornato: Settembre 2026 — Revisione v1.1 — 2026-09-24 — claude-opus-5*
