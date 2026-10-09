@@ -41,7 +41,7 @@ Oppure con l'installer del pacchetto:
 & ([scriptblock]::Create((gh api repos/davraf-amuro/dr-devops/contents/dr-devops-install.ps1 -H "Accept: application/vnd.github.raw" | Out-String)))
 ```
 
-Nota: la forma breve `irm https://raw.githubusercontent.com/... | iex` funziona solo a repo Public. Oggi risponde 404.
+Nota: la forma breve `irm https://raw.githubusercontent.com/... | iex` è un'alternativa valida, perché i repo sono Public. Su un repo Private risponderebbe 404: lì si usa `gh api`.
 
 ## 📦 Cosa finisce nel progetto host
 
@@ -85,4 +85,4 @@ Dal progetto host usa `/dr-segnala-miglioria <descrizione>` (su Copilot il promp
 
 ---
 
-*Documento aggiornato: Settembre 2026 — Revisione v1.1 — 2026-09-24 — claude-opus-5*
+*Documento aggiornato: Ottobre 2026 — Revisione v1.2 — 2026-10-09 — claude-opus-5-5*
