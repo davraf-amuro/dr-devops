@@ -19,9 +19,20 @@ Pacchetto di linee guida per rilascio e CI/CD: compose Docker Swarm, stack Porta
 - Richiesto da: nessuno. Nessun pacchetto del catalogo dichiara `dr-devops` tra le sue dipendenze.
 - Applicabilità nel catalogo: `appliesTo: any`. Si installa su qualsiasi repository, senza uno stack richiesto.
 - Contenuto delle regole: descrivono servizi .NET 10 (worker o Minimal API) deployati su Docker Swarm tramite Portainer, con immagini prodotte da GitLab CI/CD.
-- Dominio del catalogo: `devops` (Deploy, container e CI/CD, kind `any`). È l'unico pacchetto del dominio.
-- Tipologie di progetto che lo suggeriscono: nessuna. Il dominio ha `projectTypes` vuoto e nessuna tipologia lo cita in `suggestedPackages` o `optionalPackages`.
-- Rimandi ad altri pacchetti: `docker-swarm-compose.instructions.md` cita `sensitive-data.instructions.md` del core. Per il codice Data Protection rimanda a `minimal-api-architecture.instructions.md` (sezione "Autenticazione") di `dr-minimalapi`, che **non** è una dipendenza dichiarata, ed è voluto: questo pacchetto è `appliesTo: any` e copre anche repository di sola infrastruttura, senza .NET. Il rimando è condizionale al manifest e, quando il pacchetto manca, si ferma a dichiarare i due requisiti — portachiavi condiviso fra le repliche, fiducia limitata al proxy noto — senza entrare nel codice. Vedi `cross-package-references.instructions.md` del core.
+- Dominio del catalogo: `devops` ("Deploy Docker Swarm/Portainer e CI/CD GitLab", kind `any`). È l'unico pacchetto del dominio.
+- Tipologie di progetto che lo propongono: `minimal-api` e `worker-service`, come pacchetto opzionale (`optionalPackages`). Il dominio `devops` non ha tipologie proprie (`projectTypes` vuoto).
+- `dr-minimalapi` **non** è una dipendenza dichiarata, ed è voluto: questo pacchetto è `appliesTo: any` e copre anche repository di sola infrastruttura, senza .NET. Quando `dr-minimalapi` manca, il rimando si ferma a dichiarare i due requisiti (portachiavi condiviso fra le repliche, fiducia limitata al proxy noto) senza entrare nel codice.
+
+File di altri pacchetti citati dalle istruzioni:
+
+| File citato | Chi lo cita | Pacchetto che lo porta |
+|-------------|-------------|------------------------|
+| `sensitive-data.instructions.md` | `docker-swarm-compose`, `docker-scope` | `dr-guidelines` (core) |
+| `no-hardcoded-values.instructions.md` | `docker-scope` | `dr-guidelines` (core) |
+| `cross-package-references.instructions.md` | `docker-swarm-compose` | `dr-guidelines` (core) |
+| `minimal-api-architecture.instructions.md` (sezione "Autenticazione") | `docker-swarm-compose`, rimando condizionale | `dr-minimalapi` |
+
+Pacchetti suggeriti (`suggests` del catalogo): `dr-minimalapi`. L'installer non li installa e non chiede nulla: a fine installazione stampa una riga `[sugg]` con il motivo per ognuno che manca dal manifest.
 
 ## 🚀 Come si installa
 
@@ -56,9 +67,9 @@ Nota: la forma breve `irm https://raw.githubusercontent.com/... | iex` è un'alt
 | `.github/instructions/portainer-swarm-stack.instructions.md` | Copia dell'istruzione sulle procedure Portainer |
 | `.ai/dr-guidelines-packages.json` | Voce `dr-devops` in `installed`: `package`, `installedAt` (data) e `commit` (commit di `main` installato). Il file si crea se manca. |
 
-Nessuna modifica a `CLAUDE.md` né ai file di configurazione del core (`.editorconfig`, `.gitignore`, `.gitattributes`, `.claude/settings.json`, `.mcp.json`).
+Il pacchetto non modifica `CLAUDE.md` né i file di configurazione (`.editorconfig`, `.gitignore`, `.gitattributes`, `.claude/settings.json`, `.mcp.json`). Li scrive il core, solo se viene installato insieme perché mancava dal manifest.
 
-`LICENSE`, `.github/ISSUE_TEMPLATE/` e `dr-devops-install.ps1` restano in questo repo: non vengono copiati.
+Non vengono copiati `README.md`, `LICENSE`, `.github/ISSUE_TEMPLATE/` e l'installer `dr-devops-install.ps1`.
 
 Senza `-Update` un file già presente nel progetto host viene saltato (`[SKIP]`).
 
@@ -80,13 +91,13 @@ Un file rimosso da questo repo resta nel progetto host: l'installer copia, non c
 
 Non correggere la copia nel progetto host: si perde al primo `-Update`.
 
-Dal progetto host usa `/dr-segnala-miglioria <descrizione>` (su Copilot il prompt `.github/prompts/dr-segnala-miglioria.prompt.md` del core). Apre la issue in questo repo.
+Dal progetto host usa `/dr-file-feedback <descrizione>` (su Copilot il prompt `.github/prompts/dr-file-feedback.prompt.md` del core). La issue si apre in questo repo, dopo la tua conferma esplicita di titolo e corpo.
 
-| Modello | Quando |
-|---------|--------|
-| `.github/ISSUE_TEMPLATE/miglioria.md` | Richiesta evolutiva |
-| `.github/ISSUE_TEMPLATE/problema.md` | Malfunzionamento |
+| Modello del repo | Quando usarlo |
+|------------------|---------------|
+| `.github/ISSUE_TEMPLATE/miglioria.md` | Richiesta evolutiva: regola nuova, precisazione, estensione del pacchetto |
+| `.github/ISSUE_TEMPLATE/problema.md` | Malfunzionamento: regola sbagliata, ambigua o che porta l'agente fuori strada |
 
 ---
 
-*Documento aggiornato: Ottobre 2026 — Revisione v1.5 — 2026-10-11 — claude-opus-5-5*
+*Revisione v1.6 — 2026-10-11 21:00 — claude-opus-5-5*
