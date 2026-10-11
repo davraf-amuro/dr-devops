@@ -85,7 +85,7 @@ Solo questo pacchetto: stesso comando dell'installer del pacchetto, con `-Update
 
 Nota: `-Update` sovrascrive le copie locali. Si installa sempre l'ultimo `main` pushato: una modifica a questo repo non pushata su `main` non arriva nei progetti host.
 
-Un file rimosso da questo repo resta nel progetto host: l'installer copia, non cancella.
+Un file rimosso da questo repo resta nel progetto host: l'installer copia, non cancella. Fa eccezione un file elencato in `obsoleteArtifacts` del catalogo: `-Update` lo rimuove.
 
 ## 🐞 Segnalare un problema o una miglioria
 
