@@ -2,12 +2,15 @@
 
 Pacchetto di linee guida per rilascio e CI/CD: compose Docker Swarm, stack Portainer e pipeline GitLab, installabile su qualsiasi repository.
 
+> **Perimetro.** Il pacchetto non copre il container su host singolo: `Dockerfile` e `docker-compose.yml` per `docker compose up` non hanno regole proprie. Su quei file l'agente lo dichiara e non applica per analogia le regole Swarm (`docker-scope.instructions.md`).
+
 ## 🧩 Cosa contiene
 
 | File | Tipo | A cosa serve |
 |------|------|--------------|
 | `.github/instructions/docker-swarm-compose.instructions.md` | Istruzione | Regole per `docker-compose_swarm.yaml` (è il suo `applyTo`): tag immagine `${IMAGE_TAG:-latest}`, variabili d'ambiente derivate da `appsettings.json`, nessun valore sensibile nel file, ogni chiave sovrascrivibile dichiarata in `environment:`. Impone `replicas: 1` e `order: stop-first` per i worker, GELF facoltativo e portachiavi Data Protection persistito per i servizi con autenticazione. |
 | `.github/instructions/gitlab-ci-cd.instructions.md` | Istruzione | Regole per `.gitlab-ci.yml` (è il suo `applyTo`) di un progetto .NET 10: su ogni push solo `lint` e `build`, immagine, pacchetto e release solo su tag `v*.*.*`. Impone `set -euo pipefail` e push bloccanti su registry interno ed esterno, mai mascherati con `echo`. |
+| `.github/instructions/docker-scope.instructions.md` | Istruzione | Perimetro del pacchetto su `Dockerfile` e compose (è il suo `applyTo`): solo `docker-compose_swarm.yaml` è coperto. Su un `Dockerfile` o un compose per host singolo l'agente dichiara che il pacchetto non lo copre, non applica le regole Swarm per analogia e segue comunque le regole del core su dati sensibili e valori fissi. |
 | `.github/instructions/portainer-swarm-stack.instructions.md` | Istruzione | Procedure Portainer per lo stack Swarm: metodo Repository o Web editor, variabili in Advanced mode, prima installazione, aggiornamento via `IMAGE_TAG`, rollback, diagnosi di task bloccate e limiti del monitoraggio via MCP `mcp-portainer`. Il file non ha frontmatter `applyTo`. |
 
 ## 🔗 Dipendenze e domini
@@ -49,6 +52,7 @@ Nota: la forma breve `irm https://raw.githubusercontent.com/... | iex` è un'alt
 |----------------------------|-----------|
 | `.github/instructions/docker-swarm-compose.instructions.md` | Copia dell'istruzione sul compose Swarm |
 | `.github/instructions/gitlab-ci-cd.instructions.md` | Copia dell'istruzione sulla pipeline GitLab |
+| `.github/instructions/docker-scope.instructions.md` | Copia dell'istruzione sul perimetro Docker del pacchetto |
 | `.github/instructions/portainer-swarm-stack.instructions.md` | Copia dell'istruzione sulle procedure Portainer |
 | `.ai/dr-guidelines-packages.json` | Voce `dr-devops` in `installed`: `package`, `installedAt` (data) e `commit` (commit di `main` installato). Il file si crea se manca. |
 
@@ -85,4 +89,4 @@ Dal progetto host usa `/dr-segnala-miglioria <descrizione>` (su Copilot il promp
 
 ---
 
-*Documento aggiornato: Ottobre 2026 — Revisione v1.3 — 2026-10-11 — claude-opus-5-5*
+*Documento aggiornato: Ottobre 2026 — Revisione v1.4 — 2026-10-11 — claude-opus-5-5*
