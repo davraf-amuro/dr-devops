@@ -15,7 +15,7 @@ Pacchetto di linee guida per rilascio e CI/CD: compose Docker Swarm, stack Porta
 
 ## 🔗 Dipendenze e domini
 
-- Dipende da: nessuna dipendenza.
+- Dipende da: nessuna dipendenza dichiarata. Il core `dr-guidelines` arriva comunque per primo se manca dal manifest: è una dipendenza implicita di ogni pacchetto.
 - Richiesto da: nessuno. Nessun pacchetto del catalogo dichiara `dr-devops` tra le sue dipendenze.
 - Applicabilità nel catalogo: `appliesTo: any`. Si installa su qualsiasi repository, senza uno stack richiesto.
 - Contenuto delle regole: descrivono servizi .NET 10 (worker o Minimal API) deployati su Docker Swarm tramite Portainer, con immagini prodotte da GitLab CI/CD.
@@ -89,4 +89,4 @@ Dal progetto host usa `/dr-segnala-miglioria <descrizione>` (su Copilot il promp
 
 ---
 
-*Documento aggiornato: Ottobre 2026 — Revisione v1.4 — 2026-10-11 — claude-opus-5-5*
+*Documento aggiornato: Ottobre 2026 — Revisione v1.5 — 2026-10-11 — claude-opus-5-5*
