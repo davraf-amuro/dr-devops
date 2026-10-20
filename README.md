@@ -38,7 +38,7 @@ Pacchetti suggeriti (`suggests` del catalogo): `dr-minimalapi`. L'installer non 
 
 Di solito non serve farlo a mano. Per una soluzione nuova si segue la guida del core [Creare una soluzione da zero](https://github.com/davraf-amuro/dr-guidelines/blob/main/docs/guida-nuova-soluzione.md): `/dr-scaffold` installa i pacchetti giusti da solo. Il flusso completo non è ancora stato provato sul campo. Per il kind `any`, come `dr-devops`, `/dr-scaffold` delega a `/dr-scaffold-guidelines` sul repository esistente.
 
-A mano. Il core `dr-guidelines` porta `CLAUDE.md`, configurazione e skill: se manca dal manifest, l'installer lo installa per primo, con entrambe le forme qui sotto. Prerequisiti: PowerShell 7, git, `gh auth status` autenticato (l'installer si scarica con `gh api`; i repo sono Public dal 2026-09-21). Esegui dalla **root del repository host**: l'installer usa la cartella corrente come destinazione e non avvisa se sbagli cartella.
+A mano. Il core `dr-guidelines` porta `CLAUDE.md`, configurazione e skill: se manca dal manifest, l'installer lo installa per primo, con entrambe le forme qui sotto. Prerequisiti: PowerShell 7 e git (l'installer clona il repo con `git clone --depth 1`). `gh` autenticato (`gh auth status`) serve solo alle forme `gh api` qui sotto: i repo sono Public dal 2026-09-21. Su un repo Private anche git deve poterlo leggere (`gh auth setup-git`). Esegui dalla **root del repository host**: l'installer usa la cartella corrente come destinazione e non avvisa se sbagli cartella.
 
 L'installer clona `main` da GitHub in una cartella temporanea, copia i file nel progetto host e poi cancella la cartella temporanea.
 
@@ -67,7 +67,7 @@ Nota: la forma breve `irm https://raw.githubusercontent.com/... | iex` è un'alt
 | `.github/instructions/portainer-swarm-stack.instructions.md` | Copia dell'istruzione sulle procedure Portainer |
 | `.ai/dr-guidelines-packages.json` | Voce `dr-devops` in `installed`: `package`, `installedAt` (data) e `commit` (commit di `main` installato). Il file si crea se manca. |
 
-Il pacchetto non modifica `CLAUDE.md` né i file di configurazione (`.editorconfig`, `.gitignore`, `.gitattributes`, `.claude/settings.json`, `.mcp.json`). Li scrive il core, solo se viene installato insieme perché mancava dal manifest.
+Il pacchetto non modifica `CLAUDE.md` né i file di configurazione (`.editorconfig`, `.gitignore`, `.gitattributes`, `.claude/settings.json`, `.mcp.json`). Li scrive il core, solo se viene installato insieme perché mancava dal manifest; `.mcp.json` solo con `-WithMcp` dell'installer del core.
 
 Non vengono copiati `README.md`, `LICENSE`, `.github/ISSUE_TEMPLATE/` e l'installer `dr-devops-install.ps1`.
 
@@ -100,4 +100,4 @@ Dal progetto host usa `/dr-file-feedback <descrizione>` (su Copilot il prompt `.
 
 ---
 
-*Revisione v1.6 — 2026-10-11 21:00 — claude-opus-5-5*
+*Revisione v1.7 — 2026-10-20 21:00 — claude-opus-5-5*

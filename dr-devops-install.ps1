@@ -10,13 +10,18 @@
     Installazione (repo Private, con gh autenticato):
         & ([scriptblock]::Create((gh api repos/davraf-amuro/dr-devops/contents/dr-devops-install.ps1 -H "Accept: application/vnd.github.raw" | Out-String)))
 
-    Aggiornamento (sovrascrive i file gia presenti):
+    Aggiornamento (riscrive istruzioni e skill; file di configurazione personalizzati -> '<file>.new'):
         & ([scriptblock]::Create((irm https://raw.githubusercontent.com/davraf-amuro/dr-devops/main/dr-devops-install.ps1))) -Update
 
     Nessuna dipendenza dichiarata. Il core dr-guidelines, se manca dal manifest,
     si installa per primo: e' una dipendenza implicita di ogni pacchetto.
+
+    Il wrapper espone solo -Update; -NoDependencies e -SourceRoot si usano con
+    dr-guidelines-install.ps1 -Package <nome>.
 .PARAMETER Update
-    Sovrascrive i file gia presenti nel progetto con la versione corrente del pacchetto.
+    Sovrascrive istruzioni, prompt e skill gia' presenti con la versione corrente del pacchetto.
+    I file di configurazione e i sorgenti che l'host puo' aver personalizzato non si
+    sovrascrivono: la versione nuova va in '<file>.new'. Non si propaga alle dipendenze.
 #>
 
 [CmdletBinding()]
