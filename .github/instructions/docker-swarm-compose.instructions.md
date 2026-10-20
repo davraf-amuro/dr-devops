@@ -9,6 +9,7 @@ Stack: worker service / Minimal API .NET 10, deploy su Docker Swarm via Portaine
 Il file **non contiene mai valori sensibili**: solo placeholder `${VAR}`; i valori
 reali si iniettano da Portainer a deploy time. Segui `sensitive-data.instructions.md`.
 Esempi genericizzati — sostituisci i placeholder con i valori reali del progetto.
+Il pacchetto vale per qualsiasi stack (kind `any`), ma gli esempi sono **.NET**: la mappatura env di §2 (`__`, `appsettings.json`), Serilog in §5 e le chiavi Data Protection di §6 sono ASP.NET Core. Con un altro stack tieni invariate le regole sul file (image, `deploy`, `logging`, nessun valore sensibile) e sostituisci solo gli esempi: nomi delle variabili d'ambiente e convenzione di mappatura della configurazione del tuo framework.
 
 Le procedure operative in Portainer (creazione stack, update, rollback) stanno in
 `portainer-swarm-stack.instructions.md`. Qui si descrive **solo il file**.
@@ -138,6 +139,12 @@ Regole e lezioni apprese:
   raggiungibilità del collector.
 - **Conseguenza:** con driver GELF i log **non** sono più visibili in Portainer né
   via MCP (`get_service_logs` vuoto) — solo sul collector.
+- **Filtrare per `Subject`:** con GELF `docker service logs` non serve (vuoto). Se l'app
+  usa il soggetto del log (`S:{Subject}` nel template di `serilog-logging.instructions.md`
+  di `dr-dotnet-backend`), il driver spedisce la riga di Console come testo del messaggio:
+  sul collector il filtro è una ricerca di testo sul messaggio, es. `S:OrderCode=ORD-0042 `
+  (con lo spazio finale, perché `OrderId=4` non trovi anche `OrderId=42`). `Subject` non
+  è un campo GELF strutturato.
 
 ---
 
@@ -195,4 +202,4 @@ Come si ottengano, nel linguaggio del servizio, è fuori dal perimetro di questo
 - [ ] `logging` GELF (se presente): `gelf-address=${GELF_ADDRESS}`, non-blocking, buffer 4m
 - [ ] Servizio con autenticazione: portachiavi Data Protection persistito fuori dal container (DB o volume) — obbligatorio prima di alzare `replicas`
 
-*Istruzione v2.2 — Docker Swarm Compose — 2026-09-24 — claude-opus-5 — rimando a dr-minimalapi reso condizionale al manifest, ripiego limitato ai requisiti (dr-guidelines#5)*
+*Istruzione v2.3 — Docker Swarm Compose — 2026-10-20 — claude-opus-5-5 — filtro per `Subject` con driver GELF (§5), dichiarazione che gli esempi sono .NET e come adattarli. v2.2 (2026-09-24, claude-opus-5): rimando a dr-minimalapi reso condizionale al manifest, ripiego limitato ai requisiti (dr-guidelines#5)*

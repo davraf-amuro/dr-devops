@@ -8,6 +8,7 @@ Regole per creare o modificare `.gitlab-ci.yml` per un progetto .NET 10 il cui
 artefatto è un'immagine Docker deployata su Docker Swarm via Portainer.
 Testo ottimizzato per token. Segui sempre; non assumere in silenzio.
 Esempi genericizzati — sostituisci i placeholder con i valori reali del progetto.
+Il pacchetto vale per qualsiasi stack (kind `any`), ma gli esempi sono **.NET** (`dotnet format`, `dotnet publish`, cache NuGet): con un altro stack tieni la struttura della pipeline (stage, build dell'immagine, deploy) e sostituisci solo i comandi di lint, build e cache con quelli del tuo toolchain.
 
 ---
 
@@ -243,4 +244,4 @@ Exit `0` → push consentita. Non-zero → **blocca** e correggi prima di pushar
 - [ ] Nome immagine minuscolo, path coerente col compose
 - [ ] Nessuna credenziale nel file (solo variabili CI predefinite / secret)
 
-*Istruzione v1.1 — GitLab CI/CD — 2026-10-11 — claude-opus-5-5 — esempi genericizzati (nessun dato interno)*
+*Istruzione v1.2 — GitLab CI/CD — 2026-10-20 — claude-opus-5-5 — dichiarazione che gli esempi sono .NET e come adattarli. v1.1 (2026-10-11): esempi genericizzati (nessun dato interno)*
