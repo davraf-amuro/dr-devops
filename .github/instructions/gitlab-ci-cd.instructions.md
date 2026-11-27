@@ -4,7 +4,7 @@ applyTo: ".gitlab-ci.yml"
 
 # GitLab CI/CD — Pipeline .NET Worker/API (AI Agent)
 
-Regole per creare o modificare `.gitlab-ci.yml` per un progetto .NET 10 il cui
+Regole per creare o modificare `.gitlab-ci.yml` per un progetto .NET 11 il cui
 artefatto è un'immagine Docker deployata su Docker Swarm via Portainer.
 Testo ottimizzato per token. Segui sempre; non assumere in silenzio.
 Esempi genericizzati — sostituisci i placeholder con i valori reali del progetto.
@@ -244,4 +244,4 @@ Exit `0` → push consentita. Non-zero → **blocca** e correggi prima di pushar
 - [ ] Nome immagine minuscolo, path coerente col compose
 - [ ] Nessuna credenziale nel file (solo variabili CI predefinite / secret)
 
-*Istruzione v1.2 — GitLab CI/CD — 2026-10-20 — claude-opus-5-5 — dichiarazione che gli esempi sono .NET e come adattarli. v1.1 (2026-10-11): esempi genericizzati (nessun dato interno)*
+*Istruzione v1.3 — GitLab CI/CD — 2026-11-27 — claude-sonnet-5-5 — .NET 11 come versione consigliata (davraf-amuro/dr-guidelines#37). v1.2 (2026-10-20, claude-opus-5-5): dichiarazione che gli esempi sono .NET e come adattarli. v1.1 (2026-10-11): esempi genericizzati (nessun dato interno)*

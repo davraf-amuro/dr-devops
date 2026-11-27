@@ -5,7 +5,7 @@ applyTo: "docker-compose_swarm.yaml"
 # Docker Swarm Compose — Regole e Convenzioni (AI Agent)
 
 Regole per creare o correggere `docker-compose_swarm.yaml`.
-Stack: worker service / Minimal API .NET 10, deploy su Docker Swarm via Portainer.
+Stack: worker service / Minimal API .NET 11, deploy su Docker Swarm via Portainer.
 Il file **non contiene mai valori sensibili**: solo placeholder `${VAR}`; i valori
 reali si iniettano da Portainer a deploy time. Segui `sensitive-data.instructions.md`.
 Esempi genericizzati — sostituisci i placeholder con i valori reali del progetto.
@@ -202,4 +202,4 @@ Come si ottengano, nel linguaggio del servizio, è fuori dal perimetro di questo
 - [ ] `logging` GELF (se presente): `gelf-address=${GELF_ADDRESS}`, non-blocking, buffer 4m
 - [ ] Servizio con autenticazione: portachiavi Data Protection persistito fuori dal container (DB o volume) — obbligatorio prima di alzare `replicas`
 
-*Istruzione v2.3 — Docker Swarm Compose — 2026-10-20 — claude-opus-5-5 — filtro per `Subject` con driver GELF (§5), dichiarazione che gli esempi sono .NET e come adattarli. v2.2 (2026-09-24, claude-opus-5): rimando a dr-minimalapi reso condizionale al manifest, ripiego limitato ai requisiti (dr-guidelines#5)*
+*Istruzione v2.4 — Docker Swarm Compose — 2026-11-27 — claude-sonnet-5-5 — .NET 11 come versione consigliata (davraf-amuro/dr-guidelines#37). v2.3 (2026-10-20, claude-opus-5-5): filtro per `Subject` con driver GELF (§5), dichiarazione che gli esempi sono .NET e come adattarli. v2.2 (2026-09-24, claude-opus-5): rimando a dr-minimalapi reso condizionale al manifest, ripiego limitato ai requisiti (dr-guidelines#5)*

@@ -9,7 +9,7 @@ Pacchetto di linee guida per rilascio e CI/CD: compose Docker Swarm, stack Porta
 | File | Tipo | A cosa serve |
 |------|------|--------------|
 | `.github/instructions/docker-swarm-compose.instructions.md` | Istruzione | Regole per `docker-compose_swarm.yaml` (è il suo `applyTo`): tag immagine `${IMAGE_TAG:-latest}`, variabili d'ambiente derivate da `appsettings.json`, nessun valore sensibile nel file, ogni chiave sovrascrivibile dichiarata in `environment:`. Impone `replicas: 1` e `order: stop-first` per i worker, GELF facoltativo e portachiavi Data Protection persistito per i servizi con autenticazione. |
-| `.github/instructions/gitlab-ci-cd.instructions.md` | Istruzione | Regole per `.gitlab-ci.yml` (è il suo `applyTo`) di un progetto .NET 10: su ogni push solo `lint` e `build`, immagine, pacchetto e release solo su tag `v*.*.*`. Impone `set -euo pipefail` e push bloccanti su registry interno ed esterno, mai mascherati con `echo`. |
+| `.github/instructions/gitlab-ci-cd.instructions.md` | Istruzione | Regole per `.gitlab-ci.yml` (è il suo `applyTo`) di un progetto .NET 11: su ogni push solo `lint` e `build`, immagine, pacchetto e release solo su tag `v*.*.*`. Impone `set -euo pipefail` e push bloccanti su registry interno ed esterno, mai mascherati con `echo`. |
 | `.github/instructions/docker-scope.instructions.md` | Istruzione | Perimetro del pacchetto su `Dockerfile` e compose (è il suo `applyTo`): solo `docker-compose_swarm.yaml` è coperto. Su un `Dockerfile` o un compose per host singolo l'agente dichiara che il pacchetto non lo copre, non applica le regole Swarm per analogia e segue comunque le regole del core su dati sensibili e valori fissi. |
 | `.github/instructions/portainer-swarm-stack.instructions.md` | Istruzione | Procedure Portainer per lo stack Swarm: metodo Repository o Web editor, variabili in Advanced mode, prima installazione, aggiornamento via `IMAGE_TAG`, rollback, diagnosi di task bloccate e limiti del monitoraggio via MCP `mcp-portainer`. Il file non ha frontmatter `applyTo`. |
 
@@ -18,7 +18,7 @@ Pacchetto di linee guida per rilascio e CI/CD: compose Docker Swarm, stack Porta
 - Dipende da: nessuna dipendenza dichiarata. Il core `dr-guidelines` arriva comunque per primo se manca dal manifest: è una dipendenza implicita di ogni pacchetto.
 - Richiesto da: nessuno. Nessun pacchetto del catalogo dichiara `dr-devops` tra le sue dipendenze.
 - Applicabilità nel catalogo: `appliesTo: any`. Si installa su qualsiasi repository, senza uno stack richiesto.
-- Contenuto delle regole: descrivono servizi .NET 10 (worker o Minimal API) deployati su Docker Swarm tramite Portainer, con immagini prodotte da GitLab CI/CD.
+- Contenuto delle regole: descrivono servizi .NET 11 (worker o Minimal API) deployati su Docker Swarm tramite Portainer, con immagini prodotte da GitLab CI/CD.
 - Dominio del catalogo: `devops` ("Deploy Docker Swarm/Portainer e CI/CD GitLab", kind `any`). È l'unico pacchetto del dominio.
 - Tipologie di progetto che lo propongono: `minimal-api` e `worker-service`, come pacchetto opzionale (`optionalPackages`). Il dominio `devops` non ha tipologie proprie (`projectTypes` vuoto).
 - `dr-minimalapi` **non** è una dipendenza dichiarata, ed è voluto: questo pacchetto è `appliesTo: any` e copre anche repository di sola infrastruttura, senza .NET. Quando `dr-minimalapi` manca, il rimando si ferma a dichiarare i due requisiti (portachiavi condiviso fra le repliche, fiducia limitata al proxy noto) senza entrare nel codice.
@@ -100,4 +100,4 @@ Dal progetto host usa `/dr-file-feedback <descrizione>` (su Copilot il prompt `.
 
 ---
 
-*Revisione v1.7 — 2026-10-20 21:00 — claude-opus-5-5*
+*Revisione v1.8 — 2026-11-27 15:23 — claude-sonnet-5-5*
