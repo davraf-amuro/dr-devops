@@ -115,7 +115,21 @@ Non aggiungere un constraint senza aver verificato il `docker pull` dai nodi tar
 ## 5. Sezione `logging` (GELF) — facoltativa
 
 Omessa → driver default `json-file`, log visibili in Portainer. Includerla solo
-per inviare i log a un collector esterno (Graylog/GELF):
+per inviare i log a un collector esterno (Graylog/GELF) con l'opzione (a) qui sotto.
+
+**Prima di aggiungerla, chiedi come inviare i log** (o leggi la scelta già registrata in
+`.github/instructions/project-logging.instructions.md` del progetto): (a) solo questo driver,
+(b) sink Serilog Graylog nell'app **al posto** del driver. Opzioni, limiti, registrazione della
+scelta e configurazione del sink: controlla `.ai/dr-guidelines-packages.json` — se elenca
+`dr-dotnet-backend`, la fonte unica è `serilog-logging.instructions.md`, sezione "Log verso
+Graylog (GELF)"; seguila e dichiaralo. Se non lo elenca (app non .NET), presenta comunque le due
+strade come scelta, registra la risposta in `.github/instructions/project-logging.instructions.md`
+e dichiara che la configurazione del sink va presa dalla libreria di log dell'app. Con (b) questa sezione `logging` **non** si aggiunge (driver e sink insieme
+mandano ogni log due volte): l'indirizzo del collector arriva all'app con una variabile
+d'ambiente nel blocco `environment:`, senza default (§2-§3), solo nello stack dell'ambiente che spedisce
+al collector.
+
+Opzione (a):
 
 ```yaml
 logging:
@@ -187,7 +201,7 @@ Come si ottengano, nel linguaggio del servizio, è fuori dal perimetro di questo
 1. Cambiare la chiave del servizio sotto `services:` e il path immagine.
 2. Una riga `environment:` per ogni config key (rispettando §2 e §3).
 3. Lasciare `replicas: 1` e `order: stop-first` per i worker.
-4. Aggiungere `placement`/`logging` solo dopo aver verificato registry e collector.
+4. Aggiungere `placement` solo dopo aver verificato il registry; `logging` solo dopo la scelta (a)/(b) di §5 e la verifica del collector.
 5. Verificare che `docker-compose_swarm.yaml` sia nella **root** (CI e Portainer lo cercano lì).
 
 ---
@@ -199,7 +213,8 @@ Come si ottengano, nel linguaggio del servizio, è fuori dal perimetro di questo
 - [ ] Ogni chiave sovrascrivibile è nel blocco `environment:` (no env no-op)
 - [ ] `replicas: 1` e `order: stop-first` per worker stateful
 - [ ] `placement` presente solo se i nodi target raggiungono il registry
-- [ ] `logging` GELF (se presente): `gelf-address=${GELF_ADDRESS}`, non-blocking, buffer 4m
+- [ ] Graylog: scelta (a) driver / (b) sink chiesta o letta da `project-logging.instructions.md`; con (b) nessuna sezione `logging` GELF
+- [ ] `logging` GELF (se presente, opzione a): `gelf-address=${GELF_ADDRESS}`, non-blocking, buffer 4m
 - [ ] Servizio con autenticazione: portachiavi Data Protection persistito fuori dal container (DB o volume) — obbligatorio prima di alzare `replicas`
 
-*Istruzione v2.4 — Docker Swarm Compose — 2026-11-27 — claude-sonnet-5-5 — .NET 11 come versione consigliata (davraf-amuro/dr-guidelines#37). v2.3 (2026-10-20, claude-opus-5-5): filtro per `Subject` con driver GELF (§5), dichiarazione che gli esempi sono .NET e come adattarli. v2.2 (2026-09-24, claude-opus-5): rimando a dr-minimalapi reso condizionale al manifest, ripiego limitato ai requisiti (dr-guidelines#5)*
+*Istruzione v2.5 — Docker Swarm Compose — 2026-11-27 — claude-opus-5-5 — §5: prima della sezione `logging` si chiede (a) driver / (b) sink, rimando condizionale a `serilog-logging` di dr-dotnet-backend (davraf-amuro/dr-guidelines#36). v2.4: .NET 11 come versione consigliata (davraf-amuro/dr-guidelines#37). v2.3 (2026-10-20, claude-opus-5-5): filtro per `Subject` con driver GELF (§5), dichiarazione che gli esempi sono .NET e come adattarli. v2.2 (2026-09-24, claude-opus-5): rimando a dr-minimalapi reso condizionale al manifest, ripiego limitato ai requisiti (dr-guidelines#5)*
